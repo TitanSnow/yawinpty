@@ -9,7 +9,7 @@ def classifiers():
     with open('classifiers', 'r') as f:
         return [newline.sub('', ln) for ln in f]
 def version():
-    with open('yawinpty.pyx', 'r') as f:
+    with open('_yawinpty.pyx', 'r') as f:
         for ln in f:
             if ln.startswith('__version__ ='):
                 return newline.sub('', ln[15:])[:-1]
