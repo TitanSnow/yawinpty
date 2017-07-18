@@ -13,3 +13,9 @@ def version():
         for ln in f:
             if ln.startswith('__version__ ='):
                 return newline.sub('', ln[15:])[:-1]
+def static(compiler):
+    compiler.initialize()
+    try:
+        compiler.compile_options[compiler.compile_options.index('/MD')] = '/MT'
+    except ValueError:
+        pass

@@ -30,6 +30,7 @@ class build_winpty(build_ext):
         for ext in winpty_exts:
             ext.include_dirs += ['winpty/src/{}'.format(winpty_gen_include)]
 
+        static(self.compiler)
         build_ext.build_extensions(self)
 
 class build_winpty_agent(build_clib):
@@ -39,6 +40,7 @@ class build_winpty_agent(build_clib):
     def get_library_names(self):
         return []
     def build_libraries(self, libraries):
+        static(self.compiler)
         if libraries:
             winpty_commit_hash = check_output([cmd, '/c', r'cd winpty\src\shared && GetCommitHash.bat']).decode()
             winpty_gen_include = check_output([cmd, '/c', r'cd winpty\src\shared && UpdateGenVersion.bat {}'.format(winpty_commit_hash)]).decode()
