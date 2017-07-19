@@ -391,6 +391,11 @@ class _SpawnFlag:
 cdef class SpawnConfig:
     """class SpawnConfig to handle spawn config object"""
     cdef winpty.winpty_spawn_config_t* _cfg
+    cdef object spawnFlags
+    cdef object appname
+    cdef object cmdline
+    cdef object cwd
+    cdef object env
     def __cinit__(self):
         self._cfg = NULL
     def __init__(self, *spawnFlags, appname = None, cmdline = None, cwd = None, env = None):
@@ -399,6 +404,11 @@ cdef class SpawnConfig:
         ``env`` is like ``{'VAR1': 'VAL1', 'VAR2': 'VAL2'}``
         N.B.: If you want to gather all of the child's output, you may want the
         ``auto_shutdown`` flag."""
+        self.spawnFlags = spawnFlags
+        self.appname = appname
+        self.cmdline = cmdline
+        self.cwd = cwd
+        self.env = env
         cdef winpty.LPWSTR wappname = NULL, wcmdline = NULL, wcwd = NULL, wenv = NULL, temp = NULL
         cdef winpty.size_t envsz = 0
         cdef winpty.size_t tmpsz = 0
@@ -452,6 +462,8 @@ cdef class SpawnConfig:
             winpty.free(wenv)
             winpty.free(temp)
     def __dealloc__(self):
+        self._close()
+    def _close(self):
         winpty.winpty_spawn_config_free(self._cfg)
     flag = _SpawnFlag()
     def __getattribute__(self, attr):
@@ -460,6 +472,22 @@ cdef class SpawnConfig:
             raise AttributeError("'{}' object has no attribute '{}'".format(type(self).__name__, attr))
         else:
             return object.__getattribute__(self, attr)
+    def __getstate__(self):
+        return (
+            self.spawnFlags,
+            self.appname,
+            self.cmdline,
+            self.cwd,
+            self.env)
+    def __setstate__(self, state):
+        spawnFlags, appname, cmdline, cwd, env = state
+        self._close()
+        self.__init__(
+            *spawnFlags,
+            appname = appname,
+            cmdline = cmdline,
+            cwd = cwd,
+            env = env)
 
 INFINITE = <winpty.DWORD>winpty.INFINITE
 

@@ -89,5 +89,9 @@ class YawinptyTest(unittest.TestCase):
         b = pickle.loads(pickle.dumps(a))
         self.assertEqual(pickle.dumps(a), pickle.dumps(b))
 
+        a = SpawnConfig(SpawnConfig.flag.auto_shutdown, appname = 'python', cmdline = '--version', cwd = "C:\\", env = {"AWD":"DWA"})
+        b = pickle.loads(pickle.dumps(a))
+        self.assertEqual(pickle.dumps(a), pickle.dumps(b))
+
 if __name__ == '__main__':
     unittest.main()
