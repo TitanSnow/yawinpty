@@ -341,6 +341,23 @@ cdef class Config:
             raise AttributeError("'{}' object has no attribute '{}'".format(type(self).__name__, attr))
         else:
             return object.__getattribute__(self, attr)
+    def __getstate__(self):
+        sz = sizeof(self._cfg[0])
+        cdef unsigned char* cfg = <unsigned char*>(self._cfg)
+        return bytes([<int>(cfg[i]) for i in range(sz)])
+    def __setstate__(self, state):
+        if not isinstance(state, bytes):
+            raise TypeError('bytes excepted, got {}'.format(type(state).__name__))
+        if self._cfg == NULL:
+            self._cfg = <winpty.winpty_config_t*>winpty.malloc(sizeof(winpty.winpty_config_t))
+            if self._cfg == NULL:
+                raise MemoryError('malloc failed')
+        sz = sizeof(self._cfg[0])
+        if sz != len(state):
+            raise ValueError('invalid value')
+        cdef unsigned char* cfg = <unsigned char*>(self._cfg)
+        for i in range(sz):
+            cfg[i] = <unsigned char>(state[i])
 
 class _SpawnFlag:
     """class _SpawnFlag contains spawn flags

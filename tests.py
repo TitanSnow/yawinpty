@@ -81,6 +81,13 @@ class YawinptyTest(unittest.TestCase):
                 self.assertEqual(e.exitcode, 1)
             else:
                 self.assertTrue(False)
+    def test_pickle(self):
+        a = Config(Config.flag.plain_output)
+        a.set_initial_size(128, 256)
+        a.set_mouse_mode(Config.mouse_mode.none)
+        a.set_agent_timeout(500000)
+        b = pickle.loads(pickle.dumps(a))
+        self.assertEqual(pickle.dumps(a), pickle.dumps(b))
 
 if __name__ == '__main__':
     unittest.main()

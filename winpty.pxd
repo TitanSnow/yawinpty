@@ -42,6 +42,12 @@ cdef extern from 'windows.h' nogil:
     cdef BOOL GetExitCodeProcess(HANDLE, LPDWORD)
     cdef BOOL CloseHandle(HANDLE)
 
+cdef extern from '../libwinpty/WinptyInternal.h' nogil:
+    cdef struct winpty_config_s:
+        pass
+    cdef struct winpty_spawn_config_s:
+        pass
+
 cdef extern from 'winpty.h' nogil:
     cdef int WINPTY_ERROR_SUCCESS
     cdef int WINPTY_ERROR_OUT_OF_MEMORY
@@ -60,8 +66,6 @@ cdef extern from 'winpty.h' nogil:
     cdef winpty_result_t winpty_error_code(winpty_error_ptr_t err)
     cdef LPCWSTR winpty_error_msg(winpty_error_ptr_t err)
     cdef void winpty_error_free(winpty_error_ptr_t err)
-    cdef struct winpty_config_s:
-        pass
     ctypedef winpty_config_s winpty_config_t
     cdef winpty_config_t* winpty_config_new(UINT64 agentFlags, winpty_error_ptr_t* err)
     cdef void winpty_config_free(winpty_config_t* cfg)
@@ -77,8 +81,6 @@ cdef extern from 'winpty.h' nogil:
     cdef LPCWSTR winpty_conout_name(winpty_t* wp)
     cdef LPCWSTR winpty_conerr_name(winpty_t* wp)
     cdef BOOL winpty_set_size(winpty_t* wp, int cols, int rows, winpty_error_ptr_t* err)
-    cdef struct winpty_spawn_config_s:
-        pass
     ctypedef winpty_spawn_config_s winpty_spawn_config_t
     cdef winpty_spawn_config_t* winpty_spawn_config_new(UINT64 spawnFlags, LPCWSTR appname, LPCWSTR cmdline, LPCWSTR cwd, LPCWSTR env, winpty_error_ptr_t* err)
     cdef void winpty_spawn_config_free(winpty_spawn_config_t* cfg)
