@@ -69,7 +69,7 @@ ext_module = WinptyExtension('yawinpty',
         ('UNICODE', None),
         ('_UNICODE', None),
         ('NOMINMAX', None),
-        ('COMPILING_WINPTY_DLL', None)],
+        ('COMPILING_WINPTY_LIB', None)],
     include_dirs = [
         'winpty/src/include'],
     libraries = [
