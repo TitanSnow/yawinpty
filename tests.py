@@ -3,6 +3,7 @@ from yawinpty import *
 from os import environ
 from random import randint
 import pickle
+import sys
 
 cmd = environ['comspec']
 
@@ -82,6 +83,7 @@ class YawinptyTest(unittest.TestCase):
             else:
                 self.assertTrue(False)
     def test_pickle(self):
+        """test pickle of config classes"""
         a = Config(Config.flag.plain_output)
         a.set_initial_size(128, 256)
         a.set_mouse_mode(Config.mouse_mode.none)
@@ -92,6 +94,12 @@ class YawinptyTest(unittest.TestCase):
         a = SpawnConfig(SpawnConfig.flag.auto_shutdown, appname = 'python', cmdline = '--version', cwd = "C:\\", env = {"AWD":"DWA"})
         b = pickle.loads(pickle.dumps(a))
         self.assertEqual(pickle.dumps(a), pickle.dumps(b))
+    def test_cwd(self):
+        """test cwd in spawn"""
+        with Pty(Config(Config.flag.plain_output)) as pty:
+            pty.spawn(SpawnConfig(SpawnConfig.flag.auto_shutdown, appname = sys.executable, cmdline = [sys.executable, '-c', 'print(__import__(\'os\').getcwd())'], cwd = 'C:\\'))
+            with open(pty.conout_name(), 'r') as f:
+                self.assertEqual(f.readline(), 'C:\\\n')
 
 if __name__ == '__main__':
     unittest.main()

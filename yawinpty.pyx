@@ -1,4 +1,5 @@
 cimport c
+import subprocess
 
 __version__ = '0.4.3.dev5'
 
@@ -408,6 +409,8 @@ cdef class SpawnConfig:
         self.cmdline = cmdline
         self.cwd = cwd
         self.env = env
+        if not isinstance(cmdline, str) and not isinstance(cmdline, bytes) and cmdline is not None:
+            cmdline = subprocess.list2cmdline(cmdline)
         cdef c.LPWSTR wappname = NULL, wcmdline = NULL, wcwd = NULL, wenv = NULL, temp = NULL
         cdef c.size_t envsz = 0
         cdef c.size_t tmpsz = 0
