@@ -3,7 +3,7 @@ include setup.py
 include setup2.py
 include setup3.py
 include setupcommon.py
-include winpty.pxd
+include c.pxd
 include yawinpty.cpp
 include yawinpty.pyx
 include README.rst

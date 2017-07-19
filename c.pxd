@@ -2,6 +2,7 @@ from libc.stddef cimport wchar_t, size_t
 from libc.stdlib cimport malloc, free, realloc
 from libc.string cimport memcpy
 from libc.stdint cimport uintptr_t
+from cpython cimport PY_VERSION_HEX
 
 cdef extern from 'string.h' nogil:
     cdef size_t wcslen(const wchar_t*)
