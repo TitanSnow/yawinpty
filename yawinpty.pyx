@@ -1,4 +1,5 @@
 cimport c
+import subprocess
 
 __version__ = '0.4.3.dev5'
 
@@ -381,6 +382,8 @@ cdef class SpawnConfig:
         ``env`` is like ``{'VAR1': 'VAL1', 'VAR2': 'VAL2'}``
         N.B.: If you want to gather all of the child's output, you may want the
         ``auto_shutdown`` flag."""
+        if not isinstance(cmdline, str) and not isinstance(cmdline, bytes) and cmdline is not None:
+            cmdline = subprocess.list2cmdline(cmdline)
         cdef c.LPWSTR wappname = NULL, wcmdline = NULL, wcwd = NULL, wenv = NULL, temp = NULL
         cdef c.size_t envsz = 0
         cdef c.size_t tmpsz = 0

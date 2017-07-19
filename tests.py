@@ -3,6 +3,7 @@ from yawinpty import *
 from os import environ
 from random import randint
 import pickle
+import sys
 
 cmd = environ['comspec']
 
@@ -81,6 +82,12 @@ class YawinptyTest(unittest.TestCase):
                 self.assertEqual(e.exitcode, 1)
             else:
                 self.assertTrue(False)
+    def test_cwd(self):
+        """test cwd in spawn"""
+        with Pty(Config(Config.flag.plain_output)) as pty:
+            pty.spawn(SpawnConfig(SpawnConfig.flag.auto_shutdown, appname = sys.executable, cmdline = [sys.executable, '-c', 'print(__import__(\'os\').getcwd())'], cwd = 'C:\\'))
+            with open(pty.conout_name(), 'r') as f:
+                self.assertEqual(f.readline(), 'C:\\\n')
 
 if __name__ == '__main__':
     unittest.main()
