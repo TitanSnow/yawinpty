@@ -63,9 +63,11 @@ cdef class _ErrorObject:
     """errobj handle class for internal use"""
     cdef winpty.winpty_error_ptr_t _errobj
     def __cinit__(self):
+        self._errobj = NULL
+    def __init__(self):
         """should not use this
         use ``create_ErrorObject`` instead"""
-        self._errobj = NULL
+        raise NotImplementedError
     def __dealloc__(self):
         """free the errobj"""
         winpty.winpty_error_free(self._errobj)
@@ -81,7 +83,7 @@ cdef class _ErrorObject:
         return ws2str(winpty.winpty_error_msg(self._errobj))
 cdef create_ErrorObject(winpty.winpty_error_ptr_t errobj):
     """create _ErrorObject with ``winpty_error_ptr_t errobj``"""
-    self = _ErrorObject()
+    cdef _ErrorObject self = _ErrorObject.__new__(_ErrorObject)
     self._errobj = errobj
     return self
 
