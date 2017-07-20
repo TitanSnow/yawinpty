@@ -8,6 +8,15 @@ build_script:
   - C:\python36\python tests.py
   - ps: Move-Item dist\* finaldist
   - ps: .\.appveyor.ps1
+  - ps: Remove-Item yawinpty.cpp
+  - ps: ("linetrace = True`r`n" + (Get-Content setup3.py | Out-String)) | Out-File -encoding ASCII setup3.py
+  - ps: $env:Path = 'C:\Python36;C:\Python36\Scripts;' + $env:Path
+  - python --version
+  - python setup.py build_clib
+  - ps: Copy-Item build\lib.win32-3.6\winpty-agent.exe .
+  - python setup.py build_ext --inplace
+  - pip install coverage
+  - coverage run tests.py
 artifacts:
   - path: 'finaldist\*'
     name: dists

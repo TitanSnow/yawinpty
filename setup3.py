@@ -1,3 +1,8 @@
+try:
+    linetrace
+except NameError:
+    linetrace = False
+
 from setuptools import setup
 from distutils.extension import Extension
 from distutils.command.build_ext import build_ext
@@ -69,7 +74,8 @@ ext_module = WinptyExtension('yawinpty',
         ('UNICODE', None),
         ('_UNICODE', None),
         ('NOMINMAX', None),
-        ('COMPILING_WINPTY_DLL', None)],
+        ('COMPILING_WINPTY_DLL', None)] +
+        ([('CYTHON_TRACE_NOGIL', '1')] if linetrace else []),
     include_dirs = [
         'winpty/src/include'],
     libraries = [
@@ -96,7 +102,8 @@ if cythonize is not None:
         ext_module,
         compiler_directives = {
             'embedsignature': True,
-            'language_level': 3})
+            'language_level': 3,
+            'linetrace': True})
 else:
     ext_module = [ext_module]
 
