@@ -24,6 +24,9 @@ yet another winpty binding for python
 .. image:: https://img.shields.io/pypi/pyversions/yawinpty.svg
   :target: https://pypi.org/project/yawinpty
   :alt: Support python versions
+.. image:: https://codecov.io/gh/TitanSnow/yawinpty/branch/master/graph/badge.svg
+  :target: https://codecov.io/gh/TitanSnow/yawinpty
+  :alt: Codecov
 
 install
 =======
