@@ -15,8 +15,10 @@ build_script:
   - python setup.py build_clib
   - ps: Copy-Item build\lib.win32-3.6\winpty-agent.exe .
   - python setup.py build_ext --inplace
-  - pip install coverage
+  - pip install coverage codecov
   - coverage run tests.py
+after_build:
+  - codecov
 artifacts:
   - path: 'finaldist\*'
     name: dists
