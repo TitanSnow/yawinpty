@@ -560,3 +560,6 @@ cdef check_exitcode(c.HANDLE prs):
         WinError._raise_lasterror()
     if ec != 0:
         raise ExitNonZero(c.GetProcessId(prs), ec)
+
+EOL = '\n'
+EOF = '\x1a' + EOL

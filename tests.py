@@ -39,9 +39,9 @@ class YawinptyTest(unittest.TestCase):
                     st = str(j)
                     tmp.append(st)
                     fin.write(st)
-                fin.write('\n')
+                fin.write(EOL)
                 exc += [''.join(tmp)] * 2
-            fin.write('\x1a\n')
+            fin.write(EOF)
         with open(pty.conout_name(), 'r') as fout:
             out = fout.read()
         exc += ['^Z', '']
