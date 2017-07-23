@@ -1,7 +1,7 @@
 cimport c
 import subprocess
 
-__version__ = '0.4.3.dev5'
+__version__ = '0.4.3a1'
 
 cdef ws2str(c.LPCWSTR wmsg):
     """convert LPCWSTR to str"""
